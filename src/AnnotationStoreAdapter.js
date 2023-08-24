@@ -31,34 +31,43 @@ export default class AnnotationStoreAdapter {
 
     /** */
     async update(annotation) {
-        return fetch(`${this.serverUrl}/annotations/${encodeURIComponent(annotation.id)}`, {
+        return fetch(this.serverUrl + "/api/annotations/update", {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'User-Agent': 'XY'
+            },
             body: JSON.stringify({
                 annotation: {
                     data: JSON.stringify(annotation),
                     uuid: annotation.id,
                 },
             }),
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            method: 'PATCH',
-        })
-            .then((response) => this.all())
-            .catch(() => this.all());
+        }).then(async (response) => {
+            return await this.all();
+        }).catch(async () => {
+            return await this.all()
+        });
     }
 
     /** */
     async delete(annoId) {
-        return fetch(`${this.serverUrl}/annotations/${encodeURIComponent(annoId)}`, {
+        return fetch(this.serverUrl + "/api/annotations/delete", {
+            method: 'POST',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
+                'User-Agent': 'XY'
             },
-            method: 'DELETE',
-        })
-            .then((response) => this.all())
-            .catch(() => this.all());
+            body: JSON.stringify({
+                "annoId": annoId
+            }),
+        }).then(async (response) => {
+            return await this.all()
+        }).catch(async () => {
+            return await this.all()
+        });
     }
 
     /** */
